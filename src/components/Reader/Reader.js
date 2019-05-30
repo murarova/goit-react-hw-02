@@ -1,44 +1,49 @@
 import React, { Fragment, Component } from 'react';
-// import propTypes from 'prop-types';
-import styles from './reader.module.css';
+import propTypes from 'prop-types';
+import Publication from '../Publication/Publication';
+import Counter from '../Counter/Counter';
+import Controls from '../Controls/Controls';
 
 export default class Reader extends Component {
-    // static defaultProps = {
-    //     id: '',
-    //     title: '',
-    //     text: '',
-    // };
+    static defaultProps = {
+        items: [],
+    };
 
-    // static propTypes = {
-    //     id: propTypes.string,
-    //     title: propTypes.string,
-    //     text: propTypes.string,
-    // };
+    static propTypes = {
+        items: propTypes.arrayOf(propTypes.object),
+    };
 
-    state = {};
+    state = {
+        index: 0,
+        // items: this.props.items,
+    };
+
+    // nextIndex = () =>
+    //     this.setState(state => {
+    //         if (state.index === state.items.length - 1) {
+    //             return;
+    //         }
+    //         return { index: state.index + 1 };
+    //     });
+
+    // prevIndex = () =>
+    //     this.setState(state => {
+    //         if (state.index === 0) return;
+    //         return { index: state.index - 1 };
+    //     });
 
     render() {
-        // const { items } = this.props;
+        const { items } = this.props;
+        const { index } = this.state;
 
         return (
             <Fragment>
-                <div className={styles.reader}>
-                    <article className={styles.publication}>
-                        {/* <h2>{title}</h2>
-                        <p>{text}</p> */}
-                    </article>
-
-                    <p className={styles.counter}>3/10</p>
-
-                    <section className={styles.controls}>
-                        <button type="button" className={styles.button}>
-                            Назад
-                        </button>
-                        <button type="button" className={styles.button}>
-                            Вперед
-                        </button>
-                    </section>
-                </div>
+                <Publication items={items} index={index} />
+                <Counter items={items} index={index} />
+                <Controls
+                    nextIndex={this.nextIndex}
+                    prevIndex={this.prevIndex}
+                />
             </Fragment>
         );
     }
