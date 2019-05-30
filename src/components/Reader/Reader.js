@@ -15,22 +15,22 @@ export default class Reader extends Component {
 
     state = {
         index: 0,
-        // items: this.props.items,
+        items: this.props.items,
     };
 
-    // nextIndex = () =>
-    //     this.setState(state => {
-    //         if (state.index === state.items.length - 1) {
-    //             return;
-    //         }
-    //         return { index: state.index + 1 };
-    //     });
+    nextIndex = () =>
+        this.setState(state => {
+            return (
+                state.index === state.items.length - 1 || {
+                    index: state.index + 1,
+                }
+            );
+        });
 
-    // prevIndex = () =>
-    //     this.setState(state => {
-    //         if (state.index === 0) return;
-    //         return { index: state.index - 1 };
-    //     });
+    prevIndex = () =>
+        this.setState(state => {
+            return state.index === 0 || { index: state.index - 1 };
+        });
 
     render() {
         const { items } = this.props;
