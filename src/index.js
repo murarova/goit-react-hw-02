@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import Reader from './components/Reader/Reader';
-import publications from './components/Reader/publication.json';
+import Reader from './components/FirstTask/Reader/Reader';
+import publications from './components/FirstTask/Reader/publication.json';
+import MoviePage from './components/SecondTask/MoviePage/MoviePage';
 
 ReactDOM.render(
-    <Reader items={publications} />,
+    <Fragment>
+        <Reader items={publications} />
+        <MoviePage />
+    </Fragment>,
     document.getElementById('root'),
 );
