@@ -16,25 +16,28 @@ const transaction = {
 
 class Dashboard extends Component {
     state = {
-        // history: [],
+        history: [],
         // balance: null,
     };
 
-    onButton = (value, buttonName) => {
-        const newTask = {};
+    onButton = obj => {
+        // const newTask = {
+        //     id: shortid.generate(),
+        //     type: buttonName,
+        //     amount: value,
+        //     date: new Date().toLocaleString(),
+        // };
 
-        this.setState({
-            id: shortid.generate(),
-            type: buttonName,
-            amount: value,
-            date: new Date().toLocaleString(),
-        });
+        console.log(obj);
     };
 
     render() {
         return (
             <div className={styles.dashboard}>
-                <Controls onButtonClick={() => this.onButton} />
+                <Controls
+                    getInputValue={this.setInputValue}
+                    onButtonClick={this.onButton}
+                />
                 <Balance />
                 <TransactionHist />
             </div>
