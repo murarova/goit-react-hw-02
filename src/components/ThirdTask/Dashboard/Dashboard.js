@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 import React, { Component } from 'react';
 import shortid from 'shortid';
 import TransactionHist from '../TransactionHistory/TransactionHistory';
@@ -5,41 +7,51 @@ import Balance from '../Balance/Balance';
 import Controls from '../Controls/Controls';
 import styles from '../styles.module.css';
 
-/* eslint-disable */
-
-const transaction = {
-    id: shortid.generate(),
-    type: '',
-    amount: null,
-    date: new Date().toLocaleString(),
-};
-
 class Dashboard extends Component {
     state = {
         history: [],
-        // balance: null,
+        balance: 0,
+        deposit: 0,
+        withdraw: 0,
     };
 
-    onButton = obj => {
-        // const newTask = {
-        //     id: shortid.generate(),
-        //     type: buttonName,
-        //     amount: value,
-        //     date: new Date().toLocaleString(),
-        // };
+    onButton = operation => {
+        const operationToAdd = {
+            ...operation,
+            id: shortid.generate(),
+            date: new Date().toLocaleString(),
+        };
 
-        console.log(obj);
+        if (operationToAdd.name === 'deposit') {
+            this.setState(state => ({
+                history: [operationToAdd, ...state.history],
+                deposit: (state.deposit += Number(operationToAdd.value)),
+                balance: (state.balance += Number(operationToAdd.value)),
+            }));
+        } else {
+            this.setState(state => ({
+                history: [operationToAdd, ...state.history],
+                withdraw: (state.withdraw += Number(operationToAdd.value)),
+                balance: (state.balance -= Number(operationToAdd.value)),
+            }));
+        }
     };
 
     render() {
+        const { balance, deposit, withdraw, history } = this.state;
         return (
             <div className={styles.dashboard}>
                 <Controls
+                    balance={balance}
                     getInputValue={this.setInputValue}
                     onButtonClick={this.onButton}
                 />
-                <Balance />
-                <TransactionHist />
+                <Balance
+                    balance={balance}
+                    deposit={deposit}
+                    withdraw={withdraw}
+                />
+                <TransactionHist history={history} />
             </div>
         );
     }

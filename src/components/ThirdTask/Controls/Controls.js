@@ -1,7 +1,7 @@
+/* eslint-disable no-alert */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles.module.css';
-
-/* eslint-disable */
 
 class Controls extends Component {
     state = {
@@ -12,14 +12,50 @@ class Controls extends Component {
     handleSubmit = e => {
         e.preventDefault();
 
+        if (
+            this.state.name === 'withdraw' &&
+            Number(this.state.value) > this.props.balance
+        ) {
+            alert('На счету недостаточно средств для проведения операции!');
+            this.setState({
+                value: '',
+                name: '',
+            });
+            return false;
+        }
+
+        if (Number(this.state.value) === 0) {
+            alert('Введите сумму для проведения операции!');
+            this.setState({
+                value: '',
+                name: '',
+            });
+            return false;
+        }
+
+        if (Number(this.state.value) < 0) {
+            alert('Введите положительное число!');
+            this.setState({
+                value: '',
+                name: '',
+            });
+            return false;
+        }
+
         this.props.onButtonClick({ ...this.state });
+
+        return this.setState({
+            value: '',
+            name: '',
+        });
     };
 
     setInputValue = e => this.setState({ value: e.target.value });
+
     setButtonName = e => this.setState({ name: e.target.name });
 
     render() {
-        const { value, name } = this.state;
+        const { value } = this.state;
 
         return (
             <section className={styles.controls}>
@@ -33,7 +69,7 @@ class Controls extends Component {
                     <button
                         className={styles.button}
                         type="submit"
-                        name="Deposit"
+                        name="deposit"
                         onClick={this.setButtonName}
                     >
                         Deposit
@@ -41,7 +77,7 @@ class Controls extends Component {
                     <button
                         className={styles.button}
                         type="submit"
-                        name="Withdraw"
+                        name="withdraw"
                         onClick={this.setButtonName}
                     >
                         Withdraw
@@ -51,5 +87,10 @@ class Controls extends Component {
         );
     }
 }
+
+Controls.propTypes = {
+    onButtonClick: PropTypes.func.isRequired,
+    balance: PropTypes.number.isRequired,
+};
 
 export default Controls;

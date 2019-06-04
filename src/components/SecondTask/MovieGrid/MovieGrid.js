@@ -1,9 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles.module.css';
 
-/* eslint-disable */
-
-const MovieGrid = ({ id, title, posterUrl, overview }) => (
+const MovieGrid = ({ title, posterUrl, overview }) => (
     <div className={styles.movieCard}>
         <img src={posterUrl} alt="" />
         <div className={styles.content}>
@@ -12,5 +11,11 @@ const MovieGrid = ({ id, title, posterUrl, overview }) => (
         </div>
     </div>
 );
+
+MovieGrid.propTypes = {
+    title: PropTypes.string.isRequired,
+    posterUrl: PropTypes.string.isRequired,
+    overview: PropTypes.string.isRequired,
+};
 
 export default MovieGrid;
