@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 import React, { Fragment, Component } from 'react';
 import propTypes from 'prop-types';
 import Publication from '../Publication/Publication';
@@ -20,28 +21,22 @@ export default class Reader extends Component {
         nextButtonIsActive: false,
     };
 
-    // toggledButtonDisabled = () => {
-    //     console.log('this.state.index', this.state.index);
-    //     console.log('this.state.items.length', this.state.items.length);
-    //     console.log(
-    //         'this.state.prevButtonIsActive',
-    //         this.state.prevButtonIsActive,
-    //     );
-    //     console.log(
-    //         'this.state.nextButtonIsActive',
-    //         this.state.nextButtonIsActive,
-    //     );
-    //     if (this.state.index === this.state.items.length - 2) {
-    //         this.setState({ nextButtonIsActive: true });
-    //     } else {
-    //         this.setState({ nextButtonIsActive: false });
-    //     }
-    //     if (this.state.index < 0) {
-    //         this.setState({ prevButtonIsActive: true });
-    //     } else {
-    //         this.setState({ prevButtonIsActive: false });
-    //     }
-    // };
+    componentDidUpdate(prevProps, prevState) {
+        const { index, items } = this.state;
+
+        if (prevState.index !== index && index === 1) {
+            this.setState(() => ({ prevButtonIsActive: false }));
+        }
+        if (prevState.index !== index && index === 0) {
+            this.setState(() => ({ prevButtonIsActive: true }));
+        }
+        if (prevState.index !== index && items.length - 1) {
+            this.setState(() => ({ nextButtonIsActive: true }));
+        }
+        if (prevState.index !== index && index < items.length - 1) {
+            this.setState(() => ({ nextButtonIsActive: false }));
+        }
+    }
 
     nextIndex = () =>
         this.setState(
@@ -49,14 +44,10 @@ export default class Reader extends Component {
                 state.index === state.items.length - 1 || {
                     index: state.index + 1,
                 },
-            this.toggledButtonDisabled(),
         );
 
     prevIndex = () =>
-        this.setState(
-            state => state.index === 0 || { index: state.index - 1 },
-            this.toggledButtonDisabled(),
-        );
+        this.setState(state => state.index === 0 || { index: state.index - 1 });
 
     render() {
         const { items } = this.props;
